@@ -22,18 +22,24 @@ public class Player {
         this.width = 100;
         this.height = 100;
         this.sprite = new Sprite(new Texture("player.png"));
+        meter = new Accelometer();
     }
 
     void move() {
 
+        meter.update();
+
+        x += meter.ax;
+        y += meter.ay;
+ 
         melts.add(new Pair((int) x,(int) y));
         if(rmv == 100){
             melts.remove(0);
         }else{
             rmv++;
         }
-        x+= 1;
-        y+= 1;
+        //x+= 1;
+        //y+= 1;
     }
     /*void melt() {
         //if(melts.contains())
@@ -44,6 +50,7 @@ public class Player {
         }
 
     }*/
+
     void draw(SpriteBatch batch) {
         this.sprite.setPosition(x,y);
         this.sprite.draw(batch);

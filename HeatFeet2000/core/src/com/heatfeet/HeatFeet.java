@@ -14,7 +14,7 @@ public class HeatFeet extends ApplicationAdapter {
 	Player player;
 	ShapeRenderer sr;
 	private float width, height;
-
+	Player player;
 	@Override
 	public void create () {
 		player = new Player(200,200);
@@ -23,6 +23,7 @@ public class HeatFeet extends ApplicationAdapter {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		sr = new ShapeRenderer();
+
 	}
 
 	@Override
@@ -32,9 +33,9 @@ public class HeatFeet extends ApplicationAdapter {
 		batch.begin();
 
 		batch.draw(img, 0, 0, width, height);
-		player.move();
 
-		batch.draw(player.sprite, player.x, player.y, player.width, player.height);
+		player.draw(batch);
+		player.move();
 
 		batch.end();
 		sr.setColor(Color.RED);
