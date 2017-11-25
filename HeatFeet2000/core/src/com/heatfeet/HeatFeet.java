@@ -11,13 +11,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class HeatFeet extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	Player player;
 	ShapeRenderer sr;
 	private float width, height;
 	Player player;
+	Enemy enemy;
 	@Override
 	public void create () {
-		player = new Player(200,200);
+		player = new Player(700,700);
+		enemy = new Enemy(400,400,30,30);
 		batch = new SpriteBatch();
 		img = new Texture("ice.png");
 		width = Gdx.graphics.getWidth();
@@ -36,7 +37,8 @@ public class HeatFeet extends ApplicationAdapter {
 
 		player.draw(batch);
 		player.move();
-
+		enemy.draw(batch);
+		enemy.move();
 		batch.end();
 		sr.setColor(Color.RED);
 		sr.begin(ShapeRenderer.ShapeType.Line);

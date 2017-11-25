@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.Gdx;
 
 import java.util.ArrayList;
 
@@ -28,10 +29,38 @@ public class Player {
     void move() {
 
         meter.update();
-
+        /*
         x += meter.ax;
         y += meter.ay;
- 
+*/
+        if(meter.ax > 0){
+
+            x += (int) meter.ax;
+        }
+        if(meter.ay < 0){
+            y += (int) meter.ay;
+
+        }
+        if(meter.ax < 0){
+
+            x += (int) meter.ax;
+        }
+        if(meter.ay > 0){
+            y += (int) meter.ay;
+        }
+        if(x > Gdx.graphics.getWidth()){
+            x = 0;
+        }
+        if(y > Gdx.graphics.getHeight()){
+            y = 0;
+        }
+        if(y < (-1)*height){
+            y = Gdx.graphics.getHeight();
+        }
+        if(x < (-1)*width){
+            x = Gdx.graphics.getWidth();
+        }
+
         melts.add(new Pair((int) x,(int) y));
         if(rmv == 100){
             melts.remove(0);
