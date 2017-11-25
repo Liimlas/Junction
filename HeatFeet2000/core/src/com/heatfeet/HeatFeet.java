@@ -1,10 +1,14 @@
 package com.heatfeet;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
 
 public class HeatFeet extends ApplicationAdapter {
 
@@ -12,6 +16,7 @@ public class HeatFeet extends ApplicationAdapter {
 	private ShapeRenderer sr;
 	private Field field;
 	private ScreenOn so;
+	private boolean gameOn;
 
 	public HeatFeet(ScreenOn so) {
 		this.so = so;
@@ -23,28 +28,32 @@ public class HeatFeet extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		field = new Field(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.so.keepScreenOn(true);
+		gameOn = true;
+		Gdx.input.setInputProcessor(new InputAdapter(){
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				gameOn = !gameOn;
+				return true;
+			}
+		});
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		if(gameOn) {
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			batch.begin();
 
-		//Update the game world
-		field.update();
-
-
-		batch.begin();
-
-		//draw instances
-		field.draw(batch);
-
-		batch.end();
-
-		sr.begin(ShapeRenderer.ShapeType.Filled);
-		field.player.draw_melts(sr);
-		sr.end();
+			field.draw(batch);
+			field.update();
+			batch.end();
+			sr.begin(ShapeRenderer.ShapeType.Filled);
+			field.player.draw_melts(sr);
+			sr.end();
+		}
 	}
+
 
 	@Override
 	public void dispose () {

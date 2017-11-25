@@ -88,12 +88,6 @@ public class Player extends Instance {
             }
 
 
-            //sr.rectLine(player.melts.get(i-1)._1, player.melts.get(i-1)._2, player.melts.get(i)._1, player.melts.get(i)._2, i/10);
-            //sr.el(player.melts.get(i)._1, player.melts.get(i)._2, i/5);
-            //sr.rectLine(20+i*2,20+i*2,200,200, i/5);
-
-
         }
-
     }
 }
