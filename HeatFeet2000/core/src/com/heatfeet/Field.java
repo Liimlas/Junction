@@ -36,18 +36,32 @@ public class Field {
      * Update all instances (e.g. move them)
      */
     void update() {
+
         this.player.update();
+
+        ArrayList<Enemy> dyingEnemies = new ArrayList<Enemy>();
+
         for (Enemy enemy: enemies) {
             enemy.update();
-
-            System.out.println(player.immortalFor);
-            System.out.println(player.lives);
             if(enemy.hitArea().overlaps(player.hitArea()) && player.immortalFor == 0){
-
                 player.lives--;
                 player.immortalFor = 120;
             }
+            for (MeltParticle particle : this.player.melts) {
+                if (enemy.hitArea().overlaps(particle.hitArea())) {
+                    enemy.takeDamage(particle.damage);
+                }
+            }
+            if (enemy.dying) {
+                dyingEnemies.add(enemy);
+            }
+
         }
+        for(Enemy enemy: dyingEnemies) {
+            removeEnemy(enemy);
+
+        }
+
 
         if (enemies.size() < 10) {
             Enemy enemy = createEnemy();
@@ -96,6 +110,7 @@ public class Field {
      */
     void removeEnemy(Enemy enemy) {
         enemies.remove(enemies.indexOf(enemy));
+        System.out.println("Removed enemy.");
     }
 /*
     Boolean collision(Instance insta1, Instance insta2){

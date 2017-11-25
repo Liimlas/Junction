@@ -8,7 +8,6 @@ public abstract class Instance {
     Sprite sprite;
     float x, y, radius;
 
-
     public Instance(int x, int y) {
         this.x = x;
         this.y = y;

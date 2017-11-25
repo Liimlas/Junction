@@ -13,42 +13,62 @@ import static java.lang.Math.max;
 import java.util.ArrayList;
 
 public class Player extends Instance {
-    ArrayList<Pair> melts = new ArrayList();
+    ArrayList<MeltParticle> melts = new ArrayList();
     int immortalFor;
     int lives;
 
+
     private Accelometer meter;
     int rmv = 0;
+    float fullDamage = 5;
+    float speedx = 0;
+    float speedy = 0;
 
     public Player(int x, int y, float radius) {
         super(x, y);
         this.radius = radius;
         this.sprite = new Sprite(new Texture("junction_ball.png"));
-        this.sprite.setSize(radius*2, radius*2);
+
+        this.sprite.setSize(radius, radius);
         meter = new Accelometer();
         lives = 3;
         immortalFor = 0;
     }
 
     void update() {
-        move();
+        meter.update();
+        this.move();
+        int deaths = 0;
+        for (MeltParticle particle : melts) {
+            particle.update();
+            if (particle.dying) {
+                deaths += 1;
+            }
+        }
+        for (int i = 0; i < deaths; i++) {
+            melts.remove(0);
+        }
         immortalFor = max(0, immortalFor - 1);
     }
 
     void move() {
-        meter.update();
+
 
         if(meter.ax > 0){
-            x += (int) meter.ax;
-        }
-        if(meter.ay < 0){
-            y += (int) meter.ay;
+            speedx = Math.min(meter.ax / 4 + speedx, 8);
+            x += ((int) speedx);
         }
         if(meter.ax < 0){
-            x += (int) meter.ax;
+            speedx = Math.max(meter.ax / 4 + speedx, -8);
+            x += ((int) speedx);
         }
         if(meter.ay > 0){
-            y += (int) meter.ay;
+            speedy = Math.min(meter.ay / 4 + speedy, 8);
+            y += ((int) speedy);
+        }
+        if(meter.ay < 0){
+            speedy = Math.max(meter.ay / 4 + speedy, -8);
+            y += ((int) speedy);
         }
 
         if(x > Gdx.graphics.getWidth()){
@@ -64,27 +84,26 @@ public class Player extends Instance {
             x = Gdx.graphics.getWidth();
         }
 
-        melts.add(new Pair((int) x,(int) y));
-        if(rmv == 120){
-            melts.remove(0);
-        }else{
-            rmv++;
+
+        if (melts.size() < 240) {
+            MeltParticle particle = new MeltParticle(x, y);
+            melts.add(particle);
         }
     }
-
+    //mitä pienempi i, sitä vanhempi kohta
     void draw_melts(ShapeRenderer sr) {
         for(int i = 1; i < this.melts.size(); i++){
             float a = 2f/255f;
-            sr.setColor(new Color((i*2)/255f,0,(255-(i*2))/255f,0.5f));
-            sr.circle(this.melts.get(i)._1, this.melts.get(i)._2 ,i/4);
-            sr.circle((this.melts.get(i)._1 + this.melts.get(i-1)._1)/2, (this.melts.get(i)._2 + this.melts.get(i-1)._2)/2 ,i/4);
 
-            //sr.rectLine(player.melts.get(i-1)._1, player.melts.get(i-1)._2, player.melts.get(i)._1, player.melts.get(i)._2, i/10);
-            //sr.el(player.melts.get(i)._1, player.melts.get(i)._2, i/5);
-            //sr.rectLine(20+i*2,20+i*2,200,200, i/5);
+            MeltParticle particle = this.melts.get(i);
+
+            sr.setColor(new Color((i*2)/255f,0,(255-(i*2))/255f,180));
+            sr.circle(particle.x, particle.y, particle.radius);
+            if (java.lang.Math.abs(particle.x - this.melts.get(i -1).x) < 40 && java.lang.Math.abs(particle.y - this.melts.get(i -1).y) < 40) {
+                sr.circle((particle.x + this.melts.get(i-1).x)/2, (particle.y + this.melts.get(i-1).y)/2 ,particle.radius);
+            }
 
 
         }
-
     }
 }

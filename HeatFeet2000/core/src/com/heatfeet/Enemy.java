@@ -14,6 +14,8 @@ import java.util.Random;
 public class Enemy extends Instance {
     private float speedX, speedY;
     int width, height;
+    private float hp = 8;
+    boolean dying = false;
 
     public Enemy(int x, int y, float speedx, float speedy) {
         super(x, y);
@@ -23,6 +25,13 @@ public class Enemy extends Instance {
         this.speedY = speedy;
         this.sprite = new Sprite(new Texture("enemy.png"));
         sprite.setSize(width,height);
+    }
+
+    void takeDamage(float damage) {
+        this.hp -= damage;
+        if (this.hp <= 0) {
+            dying = true;
+        }
     }
 
     void update() {
