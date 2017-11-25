@@ -71,12 +71,6 @@ public class Player extends Instance {
             sr.circle(this.melts.get(i)._1, this.melts.get(i)._2 ,i/4);
             sr.circle((this.melts.get(i)._1 + this.melts.get(i-1)._1)/2, (this.melts.get(i)._2 + this.melts.get(i-1)._2)/2 ,i/4);
 
-            //sr.rectLine(player.melts.get(i-1)._1, player.melts.get(i-1)._2, player.melts.get(i)._1, player.melts.get(i)._2, i/10);
-            //sr.el(player.melts.get(i)._1, player.melts.get(i)._2, i/5);
-            //sr.rectLine(20+i*2,20+i*2,200,200, i/5);
-
-
         }
-
     }
 }
