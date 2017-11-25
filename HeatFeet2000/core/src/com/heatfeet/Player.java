@@ -62,7 +62,7 @@ public class Player {
         }
 
         melts.add(new Pair((int) x,(int) y));
-        if(rmv == 100){
+        if(rmv == 120){
             melts.remove(0);
         }else{
             rmv++;
