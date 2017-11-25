@@ -15,6 +15,11 @@ public class HeatFeet extends ApplicationAdapter {
 	private float width, height;
 	Player player;
 	Enemy enemy;
+	ScreenOn s;
+
+	public HeatFeet(ScreenOn s) {
+		this.s = s;
+	}
 	@Override
 	public void create () {
 		player = new Player(700,700);
@@ -23,7 +28,10 @@ public class HeatFeet extends ApplicationAdapter {
 		img = new Texture("ice.png");
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
+
 		sr = new ShapeRenderer();
+
+		this.s.keepScreenOn(true);
 
 	}
 
