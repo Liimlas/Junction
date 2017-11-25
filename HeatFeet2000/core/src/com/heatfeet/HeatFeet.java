@@ -12,6 +12,13 @@ public class HeatFeet extends ApplicationAdapter {
 
 	private float width, height;
 	Player player;
+
+	ScreenOn s;
+
+	public HeatFeet(ScreenOn s) {
+		this.s = s;
+	}
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -19,6 +26,7 @@ public class HeatFeet extends ApplicationAdapter {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		player = new Player(10,10);
+		this.s.keepScreenOn(true);
 	}
 
 	@Override
