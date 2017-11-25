@@ -11,13 +11,14 @@ public class HeatFeet extends ApplicationAdapter {
 	Texture img;
 
 	private float width, height;
-
+	Player player;
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("ice.png");
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
+		player = new Player(10,10);
 	}
 
 	@Override
@@ -26,6 +27,10 @@ public class HeatFeet extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0, width, height);
+
+		player.draw(batch);
+		player.move();
+
 		batch.end();
 	}
 	
