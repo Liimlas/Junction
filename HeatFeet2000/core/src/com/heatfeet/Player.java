@@ -19,9 +19,8 @@ public class Player extends Instance {
 
     public Player(int x, int y, float width, float height) {
         super(x, y);
-        this.sprite = new Sprite(new Texture("player.png"));
+        this.sprite = new Sprite(new Texture("junction_ball.png"));
         this.sprite.setSize(width, height);
-        this.sprite.setCenter(width/2, height/2);
         meter = new Accelometer();
     }
 

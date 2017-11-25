@@ -22,9 +22,9 @@ public class Field {
         this.width = width;
         this.height = height;
         this.rand = new Random();
-        this.background = new Sprite(new Texture("ice.png"));
+        this.background = new Sprite(new Texture("junction_background.png"));
         this.background.setSize(width, height);
-        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.10 * width, (float) 0.10 * height);
+        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width, (float) 0.07 * width);
     }
     /**
      * Update all instances (e.g. move them)

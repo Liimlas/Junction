@@ -16,7 +16,7 @@ public abstract class Instance {
     abstract void update();
 
     void draw(SpriteBatch batch) {
-        this.sprite.setPosition(x,y);
+        this.sprite.setPosition(x-this.sprite.getWidth()/2,y-this.sprite.getHeight()/2);
         this.sprite.draw(batch);
     }
 

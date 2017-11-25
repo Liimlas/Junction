@@ -32,10 +32,10 @@ public class HeatFeet extends ApplicationAdapter {
 		field.draw(batch);
 		field.update();
 		batch.end();
-
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 		field.player.draw_melts(sr);
 		sr.end();
+
 
 	}
 
@@ -43,6 +43,6 @@ public class HeatFeet extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		field.background.getTexture().dispose();
-		//sr.dispose();
+		sr.dispose();
 	}
 }
