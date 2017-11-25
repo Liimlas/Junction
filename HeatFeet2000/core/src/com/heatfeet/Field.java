@@ -24,16 +24,33 @@ public class Field {
         this.rand = new Random();
         this.background = new Sprite(new Texture("junction_background.png"));
         this.background.setSize(width, height);
-        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width, (float) 0.07 * width);
+        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width);
     }
     /**
      * Update all instances (e.g. move them)
      */
     void update() {
-        this.player.move();
+
+        this.player.update();
+
+        ArrayList<Enemy> dyingEnemies = new ArrayList<Enemy>();
+
         for (Enemy enemy: enemies) {
             enemy.update();
+            for (MeltParticle particle : this.player.melts) {
+                if (enemy.hitArea().overlaps(particle.hitArea())) {
+                    enemy.takeDamage(particle.damage);
+                }
+            }
+            if (enemy.dying) {
+                dyingEnemies.add(enemy);
+            }
+
         }
+        for(Enemy enemy: dyingEnemies) {
+            removeEnemy(enemy);
+        }
+
 
         if (enemies.size() < 10) {
             Enemy enemy = createEnemy();
@@ -80,6 +97,7 @@ public class Field {
      */
     void removeEnemy(Enemy enemy) {
         enemies.remove(enemies.indexOf(enemy));
+        System.out.println("Removed enemy.");
     }
 
 }

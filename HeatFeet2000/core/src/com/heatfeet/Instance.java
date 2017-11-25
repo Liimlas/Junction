@@ -2,10 +2,11 @@ package com.heatfeet;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Circle;
 
 public abstract class Instance {
     Sprite sprite;
-    float x, y, width, height;
+    float x, y, radius;
 
     public Instance(int x, int y) {
         this.x = x;
@@ -20,6 +21,8 @@ public abstract class Instance {
         this.sprite.draw(batch);
     }
 
-
+    Circle hitArea() {
+        return new Circle(x,y, radius);
+    }
 
 }
