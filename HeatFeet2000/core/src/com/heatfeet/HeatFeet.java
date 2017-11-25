@@ -29,15 +29,21 @@ public class HeatFeet extends ApplicationAdapter {
 	public void render () {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		//Update the game world
+		field.update();
+
+
 		batch.begin();
 
+		//draw instances
 		field.draw(batch);
-		field.update();
+
 		batch.end();
+
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 		field.player.draw_melts(sr);
 		sr.end();
-
 	}
 
 	@Override
