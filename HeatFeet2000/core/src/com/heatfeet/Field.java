@@ -15,6 +15,8 @@ import static java.lang.StrictMath.pow;
 public class Field {
     BitmapFont font;
     private float width, height;
+    private int enemyAmount = 0;
+    float speedx, speedy;
     //A list of all enemies in the world.
     private ArrayList<Enemy> enemies;
     Player player;
@@ -101,8 +103,22 @@ public class Field {
             x = rand.nextInt((int) width);
             y = rand.nextInt(2) == 0 ? + 150 : height + 50;
         }
+        if(enemyAmount < 6) {
+            Random rn = new Random();
+            speedx = rn.nextInt(10) / 88;
+            Random ln = new Random();
+            speedy = ln.nextInt(30) / 20 + 3;
 
-        return new Enemy((int) x, (int) y,1.5f,2.2f);
+
+        } else if(enemyAmount >= 6 & enemyAmount < 12){
+            Random rn = new Random();
+            speedx = rn.nextFloat()*  80f - 60f;
+            Random ln = new Random();
+            speedy = ln.nextInt(440) / 70 ;
+        }
+
+        enemyAmount += 1;
+        return new Enemy((int) x, (int) y,speedx,speedy);
     }
     /**
      * Remove an enemy from the enemies list (meaning that it won't exist in the game world anymore)

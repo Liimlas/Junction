@@ -19,8 +19,10 @@ public class Enemy extends Instance {
 
     public Enemy(int x, int y, float speedx, float speedy) {
         super(x, y);
-        width = 100;
-        height = 100;
+        Random rn = new Random();
+        int enemySize = rn.nextInt(70) +40;
+        width = enemySize;
+        height = enemySize;
         this.speedX = speedx;
         this.speedY = speedy;
         this.sprite = new Sprite(new Texture("enemy.png"));
