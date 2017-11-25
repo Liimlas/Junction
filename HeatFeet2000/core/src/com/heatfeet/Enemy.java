@@ -1,5 +1,6 @@
 package com.heatfeet;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,25 +11,26 @@ import java.util.Random;
  * Created by sofiakimpimaki on 25.11.2017.
  */
 
-public class Enemy {
-    float x, y;
-    float speedX, speedY;
+public class Enemy extends Instance {
+    private float speedX, speedY;
     int width, height;
-    Sprite sprite;
-    String direc;
-    Texture img;
-    //Player player = new Player();
 
-    public Enemy(int x, int y, int speed, int speedy) {
-        this.x = x;
-        this.y = y;
-        this.speedX = speed;
+    public Enemy(int x, int y, float speedx, float speedy) {
+        super(x, y);
+        width = 100;
+        height = 100;
+        this.speedX = speedx;
         this.speedY = speedy;
-        this.width = 100;
-        this.height = 100;
-        img = new Texture("enemy.png");
-        this.sprite = new Sprite(img);
-        this.sprite.setSize(width, height);
+        this.sprite = new Sprite(new Texture("enemy.png"));
+        sprite.setSize(100,100);
+    }
+
+    void update() {
+        this.move();
+
+    }
+    void move() {
+        this.move(this.x < this.width/2 || this.x + this.width/2 > Gdx.graphics.getWidth() , this.y < this.height/2 || this.y + this.height/2 > Gdx.graphics.getHeight());
     }
     void move(Boolean vertical, Boolean horizontal) {
 
@@ -43,44 +45,4 @@ public class Enemy {
         this.y += speedY;
 
     }
-    /*
-    void move(Boolean direction) {
-        if (direction) {
-            Random rn = new Random();
-            int answer = rn.nextInt(3);
-
-            if (answer == 0){
-                this.x += speedX;
-                direc = "east";
-            } else if (answer == 1){
-                this.x -= speedX;
-                direc = "west";
-            } else if (answer == 2){
-                this.y += speedY;
-                direc = "north";
-            } else if (answer == 3) {
-                this.y -= speedY;
-                direc = "south";
-            }
-
-
-        } else {
-            if(direc == "north") {
-                this.y += speedY;
-            } else if(direc == "east"){
-                this.x += speedX;
-            } else if(direc == "west") {
-                this.x -= speedX;
-            } else if(direc == "south") {
-                this.y -= speedY;
-            }
-        }
-
-    }
-    */
-    void draw(SpriteBatch batch) {
-        this.sprite.setPosition(x,y);
-        this.sprite.draw(batch);
-    }
-
 }

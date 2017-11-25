@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.heatfeet.HeatFeet;
 
-public class AndroidLauncher extends AndroidApplication implements ScreenOn{
+public class AndroidLauncher extends AndroidApplication implements ScreenOn {
 
 	View game;
 
