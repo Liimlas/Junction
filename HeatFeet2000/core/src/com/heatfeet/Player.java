@@ -17,6 +17,8 @@ public class Player extends Instance {
     private Accelometer meter;
     int rmv = 0;
     float fullDamage = 5;
+    float speedx = 0;
+    float speedy = 0;
 
     public Player(int x, int y, float radius) {
         super(x, y);
@@ -44,16 +46,20 @@ public class Player extends Instance {
 
 
         if(meter.ax > 0){
-            x += (int) meter.ax;
-        }
-        if(meter.ay < 0){
-            y += (int) meter.ay;
+            speedx = Math.min(meter.ax / 4 + speedx, 8);
+            x += ((int) speedx);
         }
         if(meter.ax < 0){
-            x += (int) meter.ax;
+            speedx = Math.max(meter.ax / 4 + speedx, -8);
+            x += ((int) speedx);
         }
         if(meter.ay > 0){
-            y += (int) meter.ay;
+            speedy = Math.min(meter.ay / 4 + speedy, 8);
+            y += ((int) speedy);
+        }
+        if(meter.ay < 0){
+            speedy = Math.max(meter.ay / 4 + speedy, -8);
+            y += ((int) speedy);
         }
         if(x > Gdx.graphics.getWidth()){
             x = 0;
