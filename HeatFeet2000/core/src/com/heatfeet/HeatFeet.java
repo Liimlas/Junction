@@ -33,6 +33,7 @@ public class HeatFeet extends ApplicationAdapter {
 
 		field.draw(batch);
 		field.update();
+
 		batch.end();
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 		field.player.draw_melts(sr);

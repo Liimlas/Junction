@@ -22,7 +22,7 @@ public class Enemy extends Instance {
         this.speedX = speedx;
         this.speedY = speedy;
         this.sprite = new Sprite(new Texture("enemy.png"));
-        sprite.setSize(100,100);
+        sprite.setSize(width,height);
     }
 
     void update() {

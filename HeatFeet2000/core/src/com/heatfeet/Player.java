@@ -8,24 +8,31 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.Gdx;
+import static java.lang.Math.max;
 
 import java.util.ArrayList;
 
 public class Player extends Instance {
     ArrayList<Pair> melts = new ArrayList();
+    int immortalFor;
+    int lives;
 
     private Accelometer meter;
     int rmv = 0;
 
-    public Player(int x, int y, float width, float height) {
+    public Player(int x, int y, float radius) {
         super(x, y);
+        this.radius = radius;
         this.sprite = new Sprite(new Texture("junction_ball.png"));
-        this.sprite.setSize(width, height);
+        this.sprite.setSize(radius*2, radius*2);
         meter = new Accelometer();
+        lives = 3;
+        immortalFor = 0;
     }
 
     void update() {
-
+        move();
+        immortalFor = max(0, immortalFor - 1);
     }
 
     void move() {
@@ -43,16 +50,17 @@ public class Player extends Instance {
         if(meter.ay > 0){
             y += (int) meter.ay;
         }
+
         if(x > Gdx.graphics.getWidth()){
             x = 0;
         }
         if(y > Gdx.graphics.getHeight()){
             y = 0;
         }
-        if(y < (-1)*height){
+        if(y < (-1)*radius*2){
             y = Gdx.graphics.getHeight();
         }
-        if(x < (-1)*width){
+        if(x < (-1)*radius*2){
             x = Gdx.graphics.getWidth();
         }
 

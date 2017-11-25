@@ -2,14 +2,18 @@ package com.heatfeet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Field {
+import static java.lang.Math.sqrt;
+import static java.lang.StrictMath.pow;
 
+public class Field {
+    BitmapFont font;
     private float width, height;
     //A list of all enemies in the world.
     private ArrayList<Enemy> enemies;
@@ -24,15 +28,25 @@ public class Field {
         this.rand = new Random();
         this.background = new Sprite(new Texture("junction_background.png"));
         this.background.setSize(width, height);
-        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width, (float) 0.07 * width);
+        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width);
+        font = new BitmapFont();
+        font.getData().setScale(10f);
     }
     /**
      * Update all instances (e.g. move them)
      */
     void update() {
-        this.player.move();
+        this.player.update();
         for (Enemy enemy: enemies) {
             enemy.update();
+
+            System.out.println(player.immortalFor);
+            System.out.println(player.lives);
+            if(enemy.hitArea().overlaps(player.hitArea()) && player.immortalFor == 0){
+
+                player.lives--;
+                player.immortalFor = 120;
+            }
         }
 
         if (enemies.size() < 10) {
@@ -54,6 +68,8 @@ public class Field {
             enemy.draw(batch);
         }
         this.player.draw(batch);
+        font.setColor(255f,0,0, 255f);
+        font.draw(batch, String.valueOf(player.lives), 50f,1900f);
     }
 
     /**
@@ -81,5 +97,11 @@ public class Field {
     void removeEnemy(Enemy enemy) {
         enemies.remove(enemies.indexOf(enemy));
     }
+/*
+    Boolean collision(Instance insta1, Instance insta2){
 
+        Boolean joo = sqrt(pow(insta1.x -insta2.x, 2)+ pow(insta1.y - insta2.y, 2)) <= (insta1.width/2 + insta2.width/2);
+        System.out.println(joo);
+        return joo;
+    }*/
 }
