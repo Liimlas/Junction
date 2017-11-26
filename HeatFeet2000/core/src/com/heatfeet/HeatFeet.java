@@ -20,7 +20,6 @@ public class HeatFeet extends ApplicationAdapter {
 	private ScreenOn so;
 	private boolean gameOn;
 
-	enum game_state {}
 
 	public HeatFeet(ScreenOn so) {
 		this.so = so;
@@ -32,13 +31,17 @@ public class HeatFeet extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		field = new Field(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.so.keepScreenOn(true);
-		gameOn = false;
+		field.game_state = 0;
 		Gdx.input.setInputProcessor(new InputAdapter(){
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-				gameOn = !gameOn;
-
+				if(field.game_state == 0 || field.game_state == 2){
+					field.game_state = 1;
+				}
+				if(field.player.lives <= 0){
+					field.reset();
+				}
 				return true;
 			}
 		});
@@ -47,7 +50,7 @@ public class HeatFeet extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		if(gameOn) {
+		if(field.game_state == 1) {
 			Gdx.gl.glClearColor(0, 0, 0, 1);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 			batch.begin();
@@ -57,6 +60,9 @@ public class HeatFeet extends ApplicationAdapter {
 			sr.begin(ShapeRenderer.ShapeType.Filled);
 			field.player.draw_melts(sr);
 			sr.end();
+			if(field.player.lives <= 0){
+				field.game_state = 2;
+			}
 		}else{
 			batch.begin();
 			field.draw_menu(batch);

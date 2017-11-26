@@ -59,10 +59,10 @@ public class Player extends Instance {
     }
 
     void move() {
-        speedx += meter.ax / 12;
-        speedy += meter.ay / 12;
-        speedx -= meter.ay / 16;
-        speedy -= meter.ax / 16;
+        speedx += meter.ax / 8;
+        speedy += meter.ay / 8;
+        speedx -= meter.ax / 12;
+        speedy -= meter.ay / 12;
         double dif = maxSpeed / totalSpeed(speedx, speedy);
         if (dif < 1) {
             speedx *= Math.sqrt(dif);

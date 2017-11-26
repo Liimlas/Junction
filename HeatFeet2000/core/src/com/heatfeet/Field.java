@@ -23,6 +23,7 @@ public class Field {
     Sprite background;
     private Random rand;
     int counter = 0;
+    int game_state = 0;
 
     public Field(float width, float height) {
         this.enemies = new ArrayList<Enemy>();
@@ -34,6 +35,7 @@ public class Field {
         this.player = new Player((int) (width/2), (int) (height/2), 50f);
         font = new BitmapFont();
         font.getData().setScale(10f);
+        font.setColor(255f,0,0, 255f);
     }
     /**
      * Update all instances (e.g. move them)
@@ -63,7 +65,7 @@ public class Field {
         for(Enemy enemy: dyingEnemies) {
             removeEnemy(enemy);
         }
-        if(counter % 500 == 0) {
+        if(counter % 400 == 0) {
             Enemy enemy = createEnemy();
             enemies.add(enemy);
         }
@@ -79,6 +81,13 @@ public class Field {
 
     }
 
+    void reset(){
+        player.lives = 3;
+        player.score = 0;
+        enemies.clear();
+        enemyAmount = 0;
+    }
+
     /**
      * Draw all instances (player + enemies)
      * @param batch
@@ -90,18 +99,21 @@ public class Field {
             enemy.draw(batch);
         }
         this.player.draw(batch);
-        font.setColor(255f,0,0, 255f);
 
         font.draw(batch, String.valueOf(player.lives), this.width - 100f,1900f);
         font.draw(batch, String.valueOf(player.score), 50f,1900f);
+
     }
 
     void draw_menu(SpriteBatch batch) {
         this.background.draw(batch);
         font.draw(batch, String.valueOf(player.lives), this.width - 100f,1900f);
         font.draw(batch, String.valueOf(player.score), 50f,1900f);
-        font.draw(batch, "Paused", 300f,height/2);
-
+        if(game_state == 0 || game_state == 2 ){
+            font.draw(batch, "Play game", 200f,height/2);
+        }else {
+            font.draw(batch, "Paused", 300f, height / 2);
+        }
     }
 
     /**
