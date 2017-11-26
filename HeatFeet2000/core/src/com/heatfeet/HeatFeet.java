@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -18,6 +20,8 @@ public class HeatFeet extends ApplicationAdapter {
 	private ScreenOn so;
 	private boolean gameOn;
 
+	enum game_state {}
+
 	public HeatFeet(ScreenOn so) {
 		this.so = so;
 	}
@@ -28,11 +32,13 @@ public class HeatFeet extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		field = new Field(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		this.so.keepScreenOn(true);
-		gameOn = true;
+		gameOn = false;
 		Gdx.input.setInputProcessor(new InputAdapter(){
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
 				gameOn = !gameOn;
+
 				return true;
 			}
 		});
@@ -51,6 +57,10 @@ public class HeatFeet extends ApplicationAdapter {
 			sr.begin(ShapeRenderer.ShapeType.Filled);
 			field.player.draw_melts(sr);
 			sr.end();
+		}else{
+			batch.begin();
+			field.draw_menu(batch);
+			batch.end();
 		}
 	}
 

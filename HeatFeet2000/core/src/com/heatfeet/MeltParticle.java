@@ -14,13 +14,13 @@ public class MeltParticle {
         this.x = x;
         this.y = y;
         this.radius = 50;
-        this.damage = 0.2f;
+        this.damage = this.radius/100f;
     }
 
     void update() {
-        this.radius -= 1.0f/1.2f;
-        this.damage -= 0.1f/120.0f;
-        if (this.radius <= 0.0f) {
+        this.radius -= this.radius*0.03f;
+        this.damage = this.radius/100f;
+        if (this.radius <= 1f) {
             this.dying = true;
         }
     }

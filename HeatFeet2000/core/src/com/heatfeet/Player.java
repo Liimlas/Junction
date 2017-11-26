@@ -11,11 +11,11 @@ import com.badlogic.gdx.Gdx;
 import static java.lang.Math.max;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player extends Instance {
     ArrayList<MeltParticle> melts = new ArrayList();
-    int immortalFor;
-    int lives;
+    int immortalFor, lives, score;
 
 
     private Accelometer meter;
@@ -23,6 +23,8 @@ public class Player extends Instance {
     float fullDamage = 5;
     float speedx = 0;
     float speedy = 0;
+    int maxSpeed = 12;
+    Random rnd = new Random();
 
     public Player(int x, int y, float radius) {
         super(x, y);
@@ -33,6 +35,7 @@ public class Player extends Instance {
         meter = new Accelometer();
         lives = 3;
         immortalFor = 0;
+        score = 0;
     }
 
     void update() {
@@ -51,25 +54,44 @@ public class Player extends Instance {
         immortalFor = max(0, immortalFor - 1);
     }
 
+    double totalSpeed(float x, float y) {
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+    }
+
     void move() {
+        speedx += meter.ax / 12;
+        speedy += meter.ay / 12;
+        speedx -= meter.ay / 16;
+        speedy -= meter.ax / 16;
+        double dif = maxSpeed / totalSpeed(speedx, speedy);
+        if (dif < 1) {
+            speedx *= Math.sqrt(dif);
+            speedy *= Math.sqrt(dif);
+        }
+        if (speedx == 0) speedx += (rnd.nextInt(3) - 1);
+        if (speedy == 0) speedy += (rnd.nextInt(3) - 1);
+        x += ((int) speedx);
+        y += ((int) speedy);
+        /*
+        x += ((int) meter.ax);
+        y += ((int) meter.ay);
 
-
-        if(meter.ax > 0){
-            speedx = Math.min(meter.ax / 4 + speedx, 8);
-            x += ((int) speedx);
+        if(meter.ax != 0){
+            //speedx = Math.min(meter.ax / 4 + speedx, 8);
+            x += ((int) meter.ax);
         }
         if(meter.ax < 0){
             speedx = Math.max(meter.ax / 4 + speedx, -8);
             x += ((int) speedx);
         }
         if(meter.ay > 0){
-            speedy = Math.min(meter.ay / 4 + speedy, 8);
-            y += ((int) speedy);
+           // speedy = Math.min(meter.ay / 4 + speedy, 8);
+            y += ((int) meter.ay);
         }
         if(meter.ay < 0){
             speedy = Math.max(meter.ay / 4 + speedy, -8);
             y += ((int) speedy);
-        }
+        }*/
 
         if(x > Gdx.graphics.getWidth()){
             x = 0;
@@ -100,6 +122,7 @@ public class Player extends Instance {
             sr.setColor(new Color((i*2)/255f,0,(255-(i*2))/255f,180));
             sr.circle(particle.x, particle.y, particle.radius);
             if (java.lang.Math.abs(particle.x - this.melts.get(i -1).x) < 40 && java.lang.Math.abs(particle.y - this.melts.get(i -1).y) < 40) {
+                //System.out.println(i);
                 sr.circle((particle.x + this.melts.get(i-1).x)/2, (particle.y + this.melts.get(i-1).y)/2 ,particle.radius);
             }
 

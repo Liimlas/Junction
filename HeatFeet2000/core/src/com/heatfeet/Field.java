@@ -22,6 +22,7 @@ public class Field {
     Player player;
     Sprite background;
     private Random rand;
+    int counter = 0;
 
     public Field(float width, float height) {
         this.enemies = new ArrayList<Enemy>();
@@ -30,7 +31,7 @@ public class Field {
         this.rand = new Random();
         this.background = new Sprite(new Texture("junction_background.png"));
         this.background.setSize(width, height);
-        this.player = new Player((int) (width/2), (int) (height/2), (float) 0.07 * width);
+        this.player = new Player((int) (width/2), (int) (height/2), 50f);
         font = new BitmapFont();
         font.getData().setScale(10f);
     }
@@ -61,14 +62,20 @@ public class Field {
         }
         for(Enemy enemy: dyingEnemies) {
             removeEnemy(enemy);
-
         }
-
-
-        if (enemies.size() < 10) {
+        if(counter % 500 == 0) {
             Enemy enemy = createEnemy();
             enemies.add(enemy);
         }
+        counter++;
+        /*
+        if (enemies.size() < 5) {
+            Enemy enemy = createEnemy();
+            enemies.add(enemy);
+        } else if(enemies.size() < 15){
+            Enemy enemy = createEnemy();
+            enemies.add(enemy);
+        }*/
 
     }
 
@@ -79,42 +86,59 @@ public class Field {
     void draw(SpriteBatch batch) {
         this.background.draw(batch);
 
-
         for(Enemy enemy : enemies) {
             enemy.draw(batch);
         }
         this.player.draw(batch);
         font.setColor(255f,0,0, 255f);
-        font.draw(batch, String.valueOf(player.lives), 50f,1900f);
+
+        font.draw(batch, String.valueOf(player.lives), this.width - 100f,1900f);
+        font.draw(batch, String.valueOf(player.score), 50f,1900f);
+    }
+
+    void draw_menu(SpriteBatch batch) {
+        this.background.draw(batch);
+        font.draw(batch, String.valueOf(player.lives), this.width - 100f,1900f);
+        font.draw(batch, String.valueOf(player.score), 50f,1900f);
+        font.draw(batch, "Paused", 300f,height/2);
+
     }
 
     /**
      * Create an enemies at random positions
      */
     Enemy createEnemy() {
+        double x,y;
 
-        float x,y;
-        //sivuille
-        if (rand.nextInt(2) == 0) {
+        double middle_x = width / 2;
+        double middle_y = height / 2;
+        double spawn_radius = middle_x / 2;
 
-            x = rand.nextInt(2) == 0 ? + 150 : width + 50;
-            y = rand.nextInt((int) height);
+        double minX = middle_x - spawn_radius;
+        double minY = middle_y - spawn_radius;
+
+
+
+        x = minX + rand.nextInt((int) spawn_radius * 2);
+        y = minY + rand.nextInt((int) spawn_radius * 2);
+        if (enemyAmount < 8) {
+            //speedx = (float) rand.nextInt(80) / 80f + 2f;
+            //speedy = (float) rand.nextInt(120) / 120f + 1f;
+            speedx = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 3;
+            speedy = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 3;
+        } else if (enemyAmount >= 8 & enemyAmount < 14) {
+            //speedx = rand.nextInt(15) / 100f + 2;
+            //speedy = rand.nextInt(10) / 120f + 1;
+            speedx = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 4;
+            speedy = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 4;
         } else {
-            x = rand.nextInt((int) width);
-            y = rand.nextInt(2) == 0 ? + 150 : height + 50;
+            //speedx = rand.nextInt(18) / 100f + 2;
+            //speedy = rand.nextInt(10) / 120f + 1;
+            speedx = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 5;
+            speedy = rand.nextFloat()* (float) pow(-1, rand.nextInt(2)) % 1f * 5;
         }
-        if(enemyAmount < 6) {
-            Random rn = new Random();
-            speedx = rn.nextInt(10) / 88;
-            Random ln = new Random();
-            speedy = ln.nextInt(30) / 20 + 3;
-
-
-        } else if(enemyAmount >= 6 & enemyAmount < 12){
-            Random rn = new Random();
-            speedx = rn.nextFloat()*  80f - 60f;
-            Random ln = new Random();
-            speedy = ln.nextInt(440) / 70 ;
+        if(speedy/speedx == 1 || speedy/speedx ==0){
+            speedy += 0.4f;
         }
 
         enemyAmount += 1;
@@ -125,6 +149,7 @@ public class Field {
      * @param enemy
      */
     void removeEnemy(Enemy enemy) {
+        player.score += enemy.enemySize;
         enemies.remove(enemies.indexOf(enemy));
         System.out.println("Removed enemy.");
     }
